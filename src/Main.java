@@ -1,8 +1,16 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Date;
 import java.util.Scanner;
 
 enum AccountType{
     SAVINGS,
     CURRENT
+}
+
+enum TransectionStatus{
+    SUCCESSFUL,
+    FAILED
 }
 class Bank {
     double rateOfInterest=8.0;
@@ -35,17 +43,32 @@ class Bank {
             return null;
         }
     }
-    void amountWithdraw(float amount)  throws InsufficientAmountException{
+    void amountWithdraw(float amount,int account_no) throws InsufficientAmountException, IOException {
         float withdraw_amount;
-        System.out.println("Enter Amount to withdraw:");
-        withdraw_amount= sc.nextFloat();
-            if(amount<withdraw_amount) {
+        Date date=new Date();
+        try {
+            FileWriter writer = new FileWriter("log.txt");
+            writer.write("Time:"+date.toString());
+            writer.write("Account Number: "+account_no);
+            System.out.println("Enter Amount to withdraw:");
+            withdraw_amount = sc.nextFloat();
+            writer.write("Withdraw Amount: "+withdraw_amount);
+            if (amount < withdraw_amount) {
+                writer.write("Available  Balance: "+amount);
+                writer.write("Transaction Status: "+TransectionStatus.FAILED);
+                writer.close();
                 throw new InsufficientAmountException("OOPS! Insufficient fund.");
+            } else {
+                writer.write("Amount before Deduction "+amount);
+                amount = amount - withdraw_amount;
+                writer.write("Amount after Deduction: "+amount);
+                writer.write("Transaction Status: "+TransectionStatus.SUCCESSFUL);
+                System.out.println("Amount Debited: " + withdraw_amount);
+                System.out.println("Clear balance: " + amount);
             }
-        else {
-            amount=amount-withdraw_amount;
-            System.out.println("Amount Debited: "+withdraw_amount);
-            System.out.println("Clear balance: "+amount);
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -53,30 +76,33 @@ class Bank {
 class SBI extends Bank{
     double  rateOfInterest=7.14;
     //float amount=5000;
-     void getDetails(float amount, AccountType account_type){
+     void getDetails(float amount, AccountType account_type, int account_no){
          System.out.println("Bank Name: SBI");
          System.out.println("Rate of interest: "+rateOfInterest+"%");
          System.out.println("Account Type: "+account_type);
+         System.out.println("Account  no.: "+account_no);
          System.out.println("Current  Balance: "+amount);
      }
 }
 class ICICI extends Bank{
     double  rateOfInterest=12.5;
     //float amount=7000;
-    void getDetails(float amount, AccountType account_type){
+    void getDetails(float amount, AccountType account_type,int account_no){
         System.out.println("Bank Name: ICICI");
         System.out.println("Rate of interest: "+rateOfInterest+"%");
         System.out.println("Account Type: "+account_type);
+        System.out.println("Account  no.: "+account_no);
         System.out.println("Current Balance:"+amount);
     }
 }
 class BOI extends Bank{
     double  rateOfInterest=10.6;
     //float amount=4000;
-    void getDetails(float amount, AccountType account_type){
+    void getDetails(float amount, AccountType account_type, int account_no){
         System.out.println("Bank Name: SBI");
         System.out.println("Rate of interest: "+rateOfInterest+"%");
         System.out.println("Account Type: "+account_type);
+        System.out.println("Account  no.: "+account_no);
         System.out.println("Current Balance: "+amount);
     }
 }
@@ -88,21 +114,25 @@ public class Main{
     }
     public static void main(String args[]) throws InsufficientAmountException {
         float amount=10000;
-
+        Scanner sc = new Scanner(System.in);
         int bank = Bank.selectBank();
         AccountType account_type=Bank.selectAccountType();
         int option = selectMenu();
+        System.out.println("Enter Account nubmer: ");
+        int acc_number=sc.nextInt();
         switch (bank){
             case 1:
                 SBI sbi=new SBI();
                 if(option==1){
                     try {
-                        sbi.amountWithdraw(amount);
+                        sbi.amountWithdraw(amount,acc_number);
                     } catch (InsufficientAmountException e) {
                         System.out.println("Insufficient Fund.....");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                 } else if (option==2) {
-                    sbi.getDetails(amount,account_type);
+                    sbi.getDetails(amount,account_type,acc_number);
                 }
                 else {
                     System.out.println("Failed!....Incorrect Input");
@@ -113,12 +143,12 @@ public class Main{
                 ICICI icici=new ICICI();
                 if(option==1){
                     try {
-                        icici.amountWithdraw(amount);
-                    } catch (InsufficientAmountException e) {
+                        icici.amountWithdraw(amount,acc_number);
+                    } catch (InsufficientAmountException | IOException e) {
                         System.out.println("Insufficient Fund.....");
                     }
                 } else if (option==2) {
-                    icici.getDetails(amount,account_type);
+                    icici.getDetails(amount,account_type,acc_number);
                 }
                 else {
                     System.out.println("Failed!....Incorrect Input");
@@ -129,12 +159,12 @@ public class Main{
                 BOI boi = new BOI();
                 if(option==1){
                     try {
-                        boi.amountWithdraw(amount);
-                    } catch (InsufficientAmountException e) {
+                        boi.amountWithdraw(amount,acc_number);
+                    } catch (InsufficientAmountException | IOException e) {
                         System.out.println("Insufficient Fund.....");
                     }
                 } else if (option==2) {
-                    boi.getDetails(amount,account_type);
+                    boi.getDetails(amount,account_type,acc_number);
                 }
                 else {
                     System.out.println("Failed!....Incorrect Input");
