@@ -1,0 +1,6 @@
+Time:Fri Sep 30 00:02:15 IST 2022
+Account Number: 1212
+Withdraw Amount: 1212.0
+Amount before Deduction 10000.0
+Amount after Deduction: 8788.0
+Transaction Status: SUCCESSFUL
