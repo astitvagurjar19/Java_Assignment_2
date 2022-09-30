@@ -1,5 +1,5 @@
-Time: Fri Sep 30 14:58:08 IST 2022
+Time: Fri Sep 30 15:15:49 IST 2022
 Account Number: 121
-Withdraw Amount: 122222.0
+Withdraw Amount: 122212.0
 Available Balance: 10000.0
 Transection Status: FAILED
