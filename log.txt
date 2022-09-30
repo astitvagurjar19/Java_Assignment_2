@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-Time:Fri Sep 30 00:02:15 IST 2022
-Account Number: 1212
-Withdraw Amount: 1212.0
-Amount before Deduction 10000.0
-Amount after Deduction: 8788.0
-Transaction Status: SUCCESSFUL
-=======
-Time:Thu Sep 29 23:42:15 IST 2022Account Number: 1212Withdraw Amount: 122121.0Available  Balance: 10000.0Transaction Status: FAILED
->>>>>>> origin/master
+Time: Fri Sep 30 14:58:08 IST 2022
+Account Number: 121
+Withdraw Amount: 122222.0
+Available Balance: 10000.0
+Transection Status: FAILED
